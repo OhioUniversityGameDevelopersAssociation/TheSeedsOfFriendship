@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class OctonanaAI : MonoBehaviour {
+public class OctonanaAI : MonoBehaviour
+{
 
     public bool cheered = false;
     public float waitTime = 1.5f;
@@ -56,7 +56,7 @@ public class OctonanaAI : MonoBehaviour {
 
     private void Update()
     {
-        if(charging && !cheered)
+        if (charging && !cheered)
         {
             timeSpentCharging += Time.deltaTime;
             bod.color = Color.Lerp(Color.white, miffedColor, timeSpentCharging / chargeTime);
@@ -64,7 +64,7 @@ public class OctonanaAI : MonoBehaviour {
             if (timeSpentCharging > chargeTime)
                 charging = false;
         }
-        if(fired)
+        if (fired)
         {
             bod.color = Color.Lerp(Color.white, miffedColor, banRB.velocity.magnitude / startFireVelocity);
             tents.color = Color.Lerp(Color.white, miffedColor, banRB.velocity.magnitude / startFireVelocity);
@@ -72,7 +72,7 @@ public class OctonanaAI : MonoBehaviour {
             tentaclesRB.angularVelocity = banRB.velocity.magnitude * 40;
             tentaclesRB.transform.localPosition = Vector2.zero;
             source.pitch = Mathf.Lerp(0.8f, 1f, startFireVelocity);
-            if(banRB.velocity.magnitude < stopVelocity)
+            if (banRB.velocity.magnitude < stopVelocity)
                 source.Stop();
         }
 
@@ -90,13 +90,13 @@ public class OctonanaAI : MonoBehaviour {
             winText.SetActive(true);
             Invoke("Win", 5.0f);
         }
-        
+
     }
 
     public void UpdateHealth()
     {
 
-        if(myStats.health >= myStats.maxHealth * (7f/8f)) //80ish
+        if (myStats.health >= myStats.maxHealth * (7f / 8f)) //80ish
         {
             tents.sprite = tentsSprites[0];
         }
@@ -131,7 +131,7 @@ public class OctonanaAI : MonoBehaviour {
         {
             tents.sprite = tentsSprites[7];
         }
-        
+
     }
 
     private IEnumerator BeginAI()
@@ -144,7 +144,7 @@ public class OctonanaAI : MonoBehaviour {
             charging = true;
             face.sprite = faceSprites[1];
 
-            while(charging)
+            while (charging)
             {
                 yield return null;
             }
@@ -164,7 +164,7 @@ public class OctonanaAI : MonoBehaviour {
             {
                 yield return null;
             }
-            
+
             fired = false;
 
             face.sprite = faceSprites[0];
@@ -174,7 +174,8 @@ public class OctonanaAI : MonoBehaviour {
 
     void Win()
     {
-        Debug.Log("OVER!!!!!!");
+        PlayerPrefs.SetInt("BeatenOnce", 1);
+        PlayerPrefs.SetInt("JustBeaten", 1);
         SceneManager.LoadScene(winScene);
     }
 }
