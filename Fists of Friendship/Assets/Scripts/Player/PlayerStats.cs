@@ -30,7 +30,7 @@ public class PlayerStats : MonoBehaviour {
             source.PlayOneShot(clip);
             if(health <= 0)
             {
-                SceneManager.LoadScene("testScene");
+                SceneManager.LoadScene("Level 1");
             }
             UpdateUI();
             StopAllCoroutines();

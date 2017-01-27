@@ -13,15 +13,19 @@ public class CameraMovement : MonoBehaviour {
 
     public float currentLeftBound, currentRightBound;
 
+    public bool isBoss;
+
     private void FixedUpdate()
     {
-        if((freeToMove || (!freeToMove && playerRB.transform.position.x > currentLeftBound && playerRB.transform.position.x < currentRightBound)) && playerRB.transform.position.x >= 10f) // Locked in arena
+        if((freeToMove || (!freeToMove && playerRB.transform.position.x > currentLeftBound && playerRB.transform.position.x < currentRightBound))) // Locked in arena
         {
-
-            adjustedPos = playerRB.position;
-            adjustedPos.y = transform.position.y;
-            adjustedPos.z = transform.position.z;
-            transform.position = Vector3.Lerp(transform.position, adjustedPos, Time.fixedDeltaTime * cameraLerpSpeed);
+            if (isBoss || playerRB.transform.position.x >= 10f)
+            {
+                adjustedPos = playerRB.position;
+                adjustedPos.y = transform.position.y;
+                adjustedPos.z = transform.position.z;
+                transform.position = Vector3.Lerp(transform.position, adjustedPos, Time.fixedDeltaTime * cameraLerpSpeed);
+            }
         }
     }
 

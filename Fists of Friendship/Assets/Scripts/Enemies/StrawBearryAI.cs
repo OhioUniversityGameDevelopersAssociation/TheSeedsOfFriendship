@@ -23,6 +23,7 @@ public class StrawBearryAI : MonoBehaviour {
     public bool knockedBack;
     public float knockBackTime;
     public Sprite happySprite;
+    public CameraMovement cam;
 
     // Tracking variables
     Vector2 dir;
@@ -39,12 +40,13 @@ public class StrawBearryAI : MonoBehaviour {
 
     private void Start()
     {
-        Transform cam = Camera.main.transform;
-        LeftBound = cam.FindChild("LeftBound");
-        RightBound = cam.FindChild("RightBound");
+        Transform camT = Camera.main.transform;
+        LeftBound = camT.FindChild("LeftBound");
+        RightBound = camT.FindChild("RightBound");
+        cam = camT.GetComponent<CameraMovement>();
 
-        Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
-        Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
+        //Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
+        //Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
         float x = RightBound.position.x - 3;
         wanderTarget.Set(x, bearRB.position.y);
         currentWait = 10;
@@ -177,7 +179,6 @@ public class StrawBearryAI : MonoBehaviour {
 
                     if (bearRB.position.x > RightBound.position.x + 0.5f || bearRB.position.x < LeftBound.position.x - 0.5f)
                     {
-                        Debug.Log("Dead");
                         Destroy(bearRB.gameObject);
                     }
                 }
@@ -217,13 +218,21 @@ public class StrawBearryAI : MonoBehaviour {
             if (knockBackTime >= 0.5f)
                 knockedBack = false;
         }
+        if(bearRB.transform.position.y >= 1.5f ||
+            bearRB.transform.position.y <= -4.5f ||
+            bearRB.transform.position.x <= cam.currentLeftBound - 10 ||
+            bearRB.transform.position.x >= cam.currentRightBound + 10)
+        {
+            if(!cheered)
+                FindObjectOfType<GameManager>().currentEnemyCount--;
+            Destroy(bearRB.gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Player" && !cheered)
         {
-            Debug.Log("What?");
             startAI = true;
             target = collision.transform;
             searchCollider.radius += 1;
@@ -277,8 +286,8 @@ public class StrawBearryAI : MonoBehaviour {
         // Find Game Manager and decrease current enemy count
         // Turn target to leave
         feetAnim.SetBool("Walking", true);
-        Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
-        Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
+        //Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
+        //Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
         float x = LeftBound.position.x - 10;
         wanderTarget.Set(x, bearRB.position.y);
         // set super huge walk time

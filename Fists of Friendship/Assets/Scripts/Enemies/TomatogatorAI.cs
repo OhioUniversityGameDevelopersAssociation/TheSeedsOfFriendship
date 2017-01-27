@@ -23,6 +23,7 @@ public class TomatogatorAI : MonoBehaviour {
     public bool knockedBack;
     public float knockBackTime;
     public Sprite happySprite;
+    CameraMovement cam;
 
     // Tracking variables
     Vector2 dir;
@@ -40,12 +41,13 @@ public class TomatogatorAI : MonoBehaviour {
 
     private void Start()
     {
-        Transform cam = Camera.main.transform;
-        LeftBound = cam.FindChild("LeftBound");
-        RightBound = cam.FindChild("RightBound");
+        Transform camT = Camera.main.transform;
+        LeftBound = camT.FindChild("LeftBound");
+        RightBound = camT.FindChild("RightBound");
+        cam = camT.GetComponent<CameraMovement>();
 
-        Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
-        Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
+        //Vector2 distFromRight = (Vector2)RightBound.position - bearRB.position;
+        //Vector2 distFromLeft = (Vector2)LeftBound.position - bearRB.position;
         float x =  RightBound.position.x - 3;
         wanderTarget.Set(x, bearRB.position.y);
         currentWalk = 10;
@@ -179,7 +181,6 @@ public class TomatogatorAI : MonoBehaviour {
 
                     if (bearRB.position.x > RightBound.position.x + 0.5f || bearRB.position.x < LeftBound.position.x - 0.5f)
                     {
-                        Debug.Log("Dead");
                         Destroy(bearRB.gameObject);
                     }
                 }
@@ -218,6 +219,15 @@ public class TomatogatorAI : MonoBehaviour {
             knockBackTime += Time.fixedDeltaTime;
             if (knockBackTime >= 0.5f)
                 knockedBack = false;
+        }
+        if (bearRB.transform.position.y >= 1.5f ||
+            bearRB.transform.position.y <= -4.5f ||
+            bearRB.transform.position.x <= cam.currentLeftBound - 6 ||
+            bearRB.transform.position.x >= cam.currentRightBound + 6)
+        {
+            if (!cheered)
+                FindObjectOfType<GameManager>().currentEnemyCount--;
+            Destroy(bearRB.gameObject);
         }
     }
 

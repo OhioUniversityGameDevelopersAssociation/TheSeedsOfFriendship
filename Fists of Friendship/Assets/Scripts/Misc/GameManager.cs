@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour {
     public int currentEnemyCount;
     bool currentlyInEncounter = false;
     bool finishedEncounters = false;
+
+    public Image arrow;
+    public AudioSource source;
 
     private void Update()
     {
@@ -75,7 +79,7 @@ public class GameManager : MonoBehaviour {
                 currentEnemyCount++;
                 yield return new WaitForSeconds(0.5f);
             }
-            Debug.Log(currentEnemyCount);
+
             while(currentEnemyCount > 0)
             {
                 yield return null;
@@ -83,13 +87,27 @@ public class GameManager : MonoBehaviour {
             yield return new WaitForSeconds(wave.waveWait);
         }
         cam.ExitEncounter();
+        StartCoroutine(FlashArrow());
         if (currentEncounter != 2)
             currentEncounter++;
         else
         {
             finishedEncounters = true;
-            FindObjectOfType<CameraMovement>().currentRightBound = 105f;
+            FindObjectOfType<CameraMovement>().EnterEncounter(10f, 107.5f);
         }
         currentlyInEncounter = false;
+    }
+
+    IEnumerator FlashArrow()
+    {
+        WaitForSeconds wait = new WaitForSeconds(0.25f);
+        for (int i = 0; i < 4; i++)
+        {
+            arrow.enabled = true;
+            source.Play();
+            yield return wait;
+            arrow.enabled = false;
+            yield return wait;
+        }
     }
 }

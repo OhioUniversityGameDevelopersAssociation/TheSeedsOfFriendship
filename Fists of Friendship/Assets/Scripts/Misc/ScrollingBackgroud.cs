@@ -53,7 +53,7 @@ public class ScrollingBackgroud : MonoBehaviour
 
     void ScrollLeft()   //When camera moves left, the image on the right will be moved to the left.
     {
-        int lastRight = rightIndex;     //overrides lastRight int to rightIndex
+        //int lastRight = rightIndex;     //overrides lastRight int to rightIndex
         //layers[rightIndex].position = Vector3.right * (layers[leftIndex].position.x - backgroundSize);  //when moving too far right, take the image on the right and put it on the left
 
         holdPositioning = Vector3.right * (layers[leftIndex].position.x - backgroundSize);
@@ -68,7 +68,7 @@ public class ScrollingBackgroud : MonoBehaviour
 
     void ScrollRight()  //When camera moves right, the image on the left will be moved to the right.
     {
-        int lastLeft = leftIndex;   //overides lastLeft int to leftindex
+        //int lastLeft = leftIndex;   //overides lastLeft int to leftindex
         //layers[leftIndex].position = Vector3.right * (layers[rightIndex].position.x + backgroundSize);  //when moving too far left, take the image on the left and put it on the right
 
         holdPositioning = Vector3.right * (layers[rightIndex].position.x + backgroundSize);
