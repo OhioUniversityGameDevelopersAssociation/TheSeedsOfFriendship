@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class playerMovement : MonoBehaviour {
+public class playerMovement : MonoBehaviour
+{
 
     // Movement
     public float movementSpeed = 1f;
@@ -33,22 +33,25 @@ public class playerMovement : MonoBehaviour {
 
 
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start()
     {
         playerRB = GetComponent<Rigidbody2D>();
         rend = GetComponent<SpriteRenderer>();
-	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
     {
         Move();
 
         AccountForFlip();
 
         Attack();
-	}
+
+        if (Input.GetButtonDown("Exit"))
+            SceneManager.LoadScene("MainMenu");
+    }
 
     void Move()
     {
@@ -66,7 +69,7 @@ public class playerMovement : MonoBehaviour {
     void AccountForFlip()
     {
         //TODO: Account for animated hand??
-        if((Input.GetAxis("Horizontal") > 0f && facingRight == false) || (Input.GetAxis("Horizontal") < 0f && facingRight == true)) // If we are facing left and started going right
+        if ((Input.GetAxis("Horizontal") > 0f && facingRight == false) || (Input.GetAxis("Horizontal") < 0f && facingRight == true)) // If we are facing left and started going right
         {
             // Flip
             rend.flipX = !rend.flipX;

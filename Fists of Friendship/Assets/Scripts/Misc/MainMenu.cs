@@ -27,8 +27,8 @@ public class MainMenu : MonoBehaviour
         if (PlayerPrefs.GetInt("JustBeaten") == 1)
         {
             Credits();
-            PlayerPrefs.SetInt("JustBeaten", 0);
         }
+        PlayerPrefs.SetInt("JustBeaten", 0);
     }
 
     public void StartGame()

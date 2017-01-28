@@ -1,10 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class PlayerStats : MonoBehaviour {
+public class PlayerStats : MonoBehaviour
+{
 
     public int health, maxHealth;
     public SpriteRenderer body, feet;
@@ -16,6 +16,7 @@ public class PlayerStats : MonoBehaviour {
 
     public AudioSource source;
     public AudioClip clip;
+    public string deathScene;
 
     private void Start()
     {
@@ -24,13 +25,13 @@ public class PlayerStats : MonoBehaviour {
 
     public void Damage(int damageTaken)
     {
-        if(!invulnrabilityFrames)
+        if (!invulnrabilityFrames)
         {
             health -= damageTaken;
             source.PlayOneShot(clip);
-            if(health <= 0)
+            if (health <= 0)
             {
-                SceneManager.LoadScene("Level 1");
+                SceneManager.LoadScene(deathScene);
             }
             UpdateUI();
             StopAllCoroutines();

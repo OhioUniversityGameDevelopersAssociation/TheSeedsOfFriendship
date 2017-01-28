@@ -1,9 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     [System.Serializable]
     public struct Encounters
@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
         }
         public Wave[] waves;
     }
-    
+
 
     public CameraMovement cam;
     private Rigidbody2D camRB;
@@ -39,12 +39,13 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        if(cam.transform.position.x > encounters[currentEncounter].encounterTrigger && !currentlyInEncounter && !finishedEncounters)
+        if (cam.transform.position.x > encounters[currentEncounter].encounterTrigger && !currentlyInEncounter && !finishedEncounters)
         {
             cam.EnterEncounter(encounters[currentEncounter].leftBound, encounters[currentEncounter].rightBound);
             StartCoroutine(EnterEncounter());
-        }   
-        if(Input.GetKeyDown(KeyCode.K))
+        }
+        //These controls are only meant for Debugging, so commenting them out for now 
+        /*if(Input.GetKeyDown(KeyCode.K))
         {
             GameObject[] crocs = GameObject.FindGameObjectsWithTag("Enemy");
             foreach (GameObject enemy in crocs)
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour {
                 Destroy(enemy);
             }
             currentEnemyCount = 0;
-        }
+        }*/
     }
 
     IEnumerator EnterEncounter()
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour {
                 yield return new WaitForSeconds(0.5f);
             }
 
-            while(currentEnemyCount > 0)
+            while (currentEnemyCount > 0)
             {
                 yield return null;
             }
